@@ -181,7 +181,7 @@ public class PlayActivity extends BaseActivity {
             @Override
             public void playNext(boolean rmProgress) {
                 String preProgressKey = progressKey;
-                PlayActivity.this.playNext(rmProgress);
+                PlayActivity.this.playNext();
                 if (rmProgress && preProgressKey != null)
                     CacheManager.delete(MD5.string2MD5(preProgressKey), 0);
             }
@@ -752,7 +752,7 @@ public class PlayActivity extends BaseActivity {
     private String sourceKey;
     private SourceBean sourceBean;
 
-    private void playNext(boolean isProgress) {
+    private void playNext() {
         boolean hasNext = true;
         if (mVodInfo == null || mVodInfo.seriesMap.get(mVodInfo.playFlag) == null) {
             hasNext = false;
@@ -760,16 +760,10 @@ public class PlayActivity extends BaseActivity {
             hasNext = mVodInfo.playIndex + 1 < mVodInfo.seriesMap.get(mVodInfo.playFlag).size();
         }
         if (!hasNext) {
-            if(isProgress && mVodInfo!=null){
-                mVodInfo.playIndex=0;
-                Toast.makeText(this, "已经是最后一集了!,即将跳到第一集继续播放", Toast.LENGTH_SHORT).show();
-            }else {
                 Toast.makeText(this, "已经是最后一集了!", Toast.LENGTH_SHORT).show();
                 return;
             }
-        }else {
-            mVodInfo.playIndex++;
-        }
+        mVodInfo.playIndex++;
         play(false);
     }
 
